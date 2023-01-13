@@ -89,6 +89,7 @@ function App() {
           <WeatherScroller forecast={forecast.forecast.forecastday} />
         </Box>
       )}
+      Powered by <a href="https://www.weatherapi.com/" title="Free Weather API">WeatherAPI.com</a>
     </div>
   );
 }
