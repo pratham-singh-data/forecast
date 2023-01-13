@@ -29,7 +29,6 @@ function App() {
       setIsLoading(false);
     })
   }
-  console.log(forecast)
 
   // store in localstirage on change
   useEffect(() => {
