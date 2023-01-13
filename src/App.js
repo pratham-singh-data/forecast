@@ -1,7 +1,7 @@
 import { TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
-import "./App.css"
+import "./App.css";
 import { CenterredCircularProgress } from "./components/CenterredCircularProgress";
 import { WeatherScroller } from "./components/WeatherScroller";
 import { getDefaultLocation } from "./misc/getDefaultLocation";
@@ -18,65 +18,77 @@ function App() {
 
   // function to retreive weather data
   const getForecast = () => {
-    fetch(`https://api.weatherapi.com/v1/forecast.json?key=${process.env.REACT_APP_API_KEY}&q=${location}&days=5&aqi=yes&alerts=no`).then(res => res.json()).then(res => {
-      setForecast({forecast: res.forecast, location: res.location});
+    fetch(
+      `https://api.weatherapi.com/v1/forecast.json?key=${process.env.REACT_APP_API_KEY}&q=${location}&days=5&aqi=yes&alerts=no`
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        setForecast({ forecast: res.forecast, location: res.location });
 
-      // if forecast is not valid
-      if(! res.forecast){
-        setForecast({forecast: {forecastday: []}, location: {name: "Undefined", country: "undefined"}});
-      }
+        // if forecast is not valid
+        if (!res.forecast) {
+          setForecast({
+            forecast: { forecastday: [] },
+            location: { name: "Undefined", country: "undefined" },
+          });
+        }
 
-      setIsLoading(false);
-    })
-  }
+        setIsLoading(false);
+      });
+  };
 
   // store in localstirage on change
   useEffect(() => {
     localStorage.setItem("forecaster-location", location);
-  }, [location])
+  }, [location]);
 
   // get forecast data on first load
   useEffect(() => {
     getForecast();
     // eslint-disable-next-line
-  }, [])
+  }, []);
 
   return (
     <div className="App">
-      <Box className="top-display">
-        Forecast
-      </Box>
+      <Box className="top-display">Forecast</Box>
 
-      {isLoading &&
-        <CenterredCircularProgress/>
-      }
+      {isLoading && <CenterredCircularProgress />}
 
-      {! isLoading &&
+      {!isLoading && (
         <Box className="vertical-centerring">
-          {edittingToggle &&
-            <TextField variant="outlined" value={location} sx={{my: "10px"}} onChange={(ev) => {
-              setLocation(ev.target.value)
-            }} onKeyDown={(ev) => {
-              if(ev.keyCode === 13){
-                setIsLoading(true);
-                getForecast();
-                setEdittingToggle(false);
-              }
-            }} />
-          }
+          {edittingToggle && (
+            <TextField
+              variant="outlined"
+              value={location}
+              sx={{ my: "10px" }}
+              onChange={(ev) => {
+                setLocation(ev.target.value);
+              }}
+              onKeyDown={(ev) => {
+                if (ev.keyCode === 13) {
+                  setIsLoading(true);
+                  getForecast();
+                  setEdittingToggle(false);
+                }
+              }}
+            />
+          )}
 
-          {!edittingToggle &&
-            <Typography variant="p" sx={{cursor: "pointer"}} onClick={() => {
-              setEdittingToggle(true);
-            }}>
+          {!edittingToggle && (
+            <Typography
+              variant="p"
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                setEdittingToggle(true);
+              }}
+            >
               {forecast.location.name}, {forecast.location.country}
             </Typography>
-          }
+          )}
 
           <WeatherScroller forecast={forecast.forecast.forecastday} />
-
         </Box>
-      }
+      )}
     </div>
   );
 }
