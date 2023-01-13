@@ -18,7 +18,7 @@ function App() {
 
   // function to retreive weather data
   const getForecast = () => {
-    fetch(`https://api.weatherapi.com/v1/forecast.json?key=${process.env.REACT_APP_API_KEY}&q=${location}&days=3&aqi=yes&alerts=no`).then(res => res.json()).then(res => {
+    fetch(`https://api.weatherapi.com/v1/forecast.json?key=${process.env.REACT_APP_API_KEY}&q=${location}&days=5&aqi=yes&alerts=no`).then(res => res.json()).then(res => {
       setForecast({forecast: res.forecast, location: res.location});
 
       // if forecast is not valid
@@ -44,7 +44,7 @@ function App() {
   return (
     <div className="App">
       <Box className="top-display">
-        3 Day Forecast
+        Forecast
       </Box>
 
       {isLoading &&
